@@ -6,8 +6,7 @@ public class userVO {
 	private String mem_id;
 	private String mem_pass;
 	private String mem_name;
-	private String mem_email1;
-	private int mem_phone;
+	private String mem_phone;
 	public String getMem_id() {
 		return mem_id;
 	}
@@ -26,16 +25,11 @@ public class userVO {
 	public void setMem_name(String mem_name) {
 		this.mem_name = mem_name;
 	}
-	public String getMem_email1() {
-		return mem_email1;
-	}
-	public void setMem_email1(String mem_email1) {
-		this.mem_email1 = mem_email1;
-	}
-	public int getMem_phone() {
+	
+	public String getMem_phone() {
 		return mem_phone;
 	}
-	public void setMem_phone(int mem_phone) {
+	public void setMem_phone(String mem_phone) {
 		this.mem_phone = mem_phone;
 	}
 	

@@ -22,4 +22,11 @@ public class userDAOimpl implements userDAO{
 		sql.insert(namespace + ".Join", vo);
 	}
 
+
+
+	@Override
+	public userVO Login(userVO vo) throws Exception {
+		return sql.selectOne(namespace+".Login", vo);
+	}
+
 }

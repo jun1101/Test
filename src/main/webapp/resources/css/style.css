@@ -25,7 +25,6 @@ a{
 .nav_menu li{
 	list-style:none;
 	display: flex;
-	float:right;
 	background-color: dodgerblue;
 	border-radius: 10px;
 	padding: 15px;

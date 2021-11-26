@@ -5,9 +5,17 @@
 
 	<!-- 회원 가입 부분 -->
 	<insert id="Join">
-		insert into member(mem_id, mem_pass, mem_name, mem_phone, mem_email1)
-			values(#{mem_id}, #{mem_pass}, #{mem_name}, #{mem_phone}, #{mem_email1})
+		insert into members(mem_id, mem_pass, mem_name, mem_phone)
+			values(#{mem_id}, #{mem_pass}, #{mem_name}, #{mem_phone})
 	</insert>
+	
+	<select id="Login" resultType="com.audio.userVO.userVO">
+		select
+			mem_id, mem_pass, mem_name, mem_phone
+		from
+			members
+		where mem_id = #{mem_id}
+	</select>
 
 
 </mapper>
