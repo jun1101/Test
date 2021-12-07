@@ -1,4 +1,4 @@
-package com.audio.userVO;
+package com.audio.VO;
 
 public class userVO {
 
@@ -7,6 +7,32 @@ public class userVO {
 	private String mem_pass;
 	private String mem_name;
 	private String mem_phone;
+	private String mem_kakao;
+	private String mem_google;
+	private String mem_naver;
+	
+	
+	
+	
+	
+	public String getMem_naver() {
+		return mem_naver;
+	}
+	public void setMem_naver(String mem_naver) {
+		this.mem_naver = mem_naver;
+	}
+	public String getMem_kakao() {
+		return mem_kakao;
+	}
+	public void setMem_kakao(String mem_kakao) {
+		this.mem_kakao = mem_kakao;
+	}
+	public String getMem_google() {
+		return mem_google;
+	}
+	public void setMem_google(String mem_google) {
+		this.mem_google = mem_google;
+	}
 	public String getMem_id() {
 		return mem_id;
 	}

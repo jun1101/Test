@@ -1,12 +1,14 @@
 package com.audio.Service;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
-import com.audio.userDAO.userDAO;
-import com.audio.userVO.userVO;
+import com.audio.DAO.userDAO;
+import com.audio.VO.userVO;
 
 @Service
 public class userServiceimpl implements userService{
@@ -28,5 +30,43 @@ public class userServiceimpl implements userService{
 	public void Logout(HttpSession session) throws Exception {
 		session.invalidate();
 	}
+
+	@Override
+	public void setKakaoConnection(Map<String, Object> paramMap) throws Exception {
+		dao.setKakaoConnection(paramMap);
+	}
+
+	@Override
+	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap) throws Exception {
+		return dao.kakaoConnectionCheck(paramMap);
+	}
+
+	@Override
+	public void setnaverConnection(Map<String, Object> apiJson) throws Exception {
+		dao.setnaverConnection(apiJson);
+		
+	}
+
+	@Override
+	public Map<String, Object> naverConnectionCheck(Map<String, Object> paramMap) throws Exception {
+		return dao.naverConnectionCheck(paramMap);
+	}
+
+	
+
+	@Override
+	public userVO googleConnectionCheck(userVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.googleConnectionCheck(vo);
+	}
+
+	@Override
+	public void setgoogleConnection(userVO vo) throws Exception {
+		dao.setgoogleConnection(vo);
+	}
+
+	
+
+	
 
 }

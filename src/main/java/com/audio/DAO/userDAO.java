@@ -1,28 +1,22 @@
-package com.audio.Service;
+package com.audio.DAO;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import com.audio.VO.userVO;
 
-public interface userService {
-	
+public interface userDAO {
 	public void Join(userVO vo) throws Exception;
 	
-	public userVO  Login(userVO vo) throws Exception;
+	public userVO Login(userVO vo) throws Exception;
 	
-	public void Logout(HttpSession session) throws Exception;
-
 	public void setKakaoConnection(Map<String, Object> paramMap) throws Exception;
 
 	public Map<String, Object> kakaoConnectionCheck(Map<String, Object> paramMap) throws Exception;
-
-	public Map<String, Object> naverConnectionCheck(Map<String, Object> paramMap) throws Exception;
 	
+	public Map<String, Object> naverConnectionCheck(Map<String, Object> apiJson) throws Exception;
 	
-
-	public void setnaverConnection(Map<String, Object> apiJson) throws Exception;
+	public void setnaverConnection(Map<String, Object> paramMap) throws Exception;
+	
 	
 	public userVO googleConnectionCheck(userVO vo) throws Exception;
 	
@@ -30,4 +24,5 @@ public interface userService {
 	
 	
 	
+
 }

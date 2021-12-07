@@ -1,5 +1,9 @@
 @charset "UTF-8";
-
+.navbar{
+	display: flex;
+	width: 100%;
+	display: inline-block;
+}
 a{
 	outline: none;
 	text-decoration: none;
@@ -7,6 +11,7 @@ a{
 }
 .navbar_logo{
 	width: 400px;
+	float: left;
 }
 .nav_main_logo{
 	width: 400px;
@@ -21,6 +26,10 @@ a{
 		
 		margin-left:10px;
 }
+.nav_menu{
+	float: right;
+}
+
 
 .nav_menu li{
 	list-style:none;
@@ -31,6 +40,8 @@ a{
 	cursor:pointer;
 	margin-right:15px;
 	margin-top:0;
+	display:inline-block
+	
 }
 .Join{
         width: 800px;

@@ -18,18 +18,34 @@
 			
 			</div>
 			<ul class="nav_menu">
-			<c:if test="${member1 == null}">
-				<li><a href="${pageContext.request.contextPath}/login.do">Login</a></li>
+			<c:if test="${sessionId == null && member1== null }">
+			<li><a href="${pageContext.request.contextPath}/main.do">Home</a></li>
+				
 				<li><a href="${pageContext.request.contextPath}/join.do">Join</a></li>
-				<li><a href="${pageContext.request.contextPath}/main.do">Home</a></li>
-				<li>${member1.mem_id}님 환영합니다.</li>
+				<li><a href="${pageContext.request.contextPath}/login.do">Login</a></li>
+				
 			</c:if>
-			<c:if test ="${member1 != null}">
-				<li>${member1.mem_name}님 환영합니다.</li>
+			<c:if test ="${sessionId != null}">
+			<li><a href="${pageContext.request.contextPath}/main.do">Home</a></li>
+				<li><a href="${pageContext.request.contextPath}/pay.do">이용권 구매</a></li>
 				<li>
 					<a href="${pageContext.request.contextPath}/Logout.do">Logout</a>
 				</li>
-				<li><a href="${pageContext.request.contextPath}/main.do">Home</a></li>
+				
+				<li>${sessionId}님 환영합니다.</li>
+			</c:if>
+			<c:if test ="${member1 != null}">
+			<li><a href="${pageContext.request.contextPath}/main.do">Home</a></li>
+			<li><a href="${pageContext.request.contextPath}/pay.do">이용권 구매</a></li>
+				
+				<li>
+					<a href="${pageContext.request.contextPath}/Logout.do">Logout</a>
+				</li>
+				
+				<li>${member1.mem_id}님 환영합니다.</li>
+			</c:if>
+			<c:if test="${userId != null}">
+			<li>123123123123123</li>
 			</c:if>
 			</ul>
 			

@@ -16,6 +16,40 @@
 			members
 		where mem_id = #{mem_id}
 	</select>
+	
+	<select id ="kakaoConnectionCheck" resultType = "map">
+	select num_id, mem_id, mem_kakao, mem_day
+	from members
+	where mem_kakao = #{id} and mem_id = #{email}
+	
+	</select>
+	<select id ="googleConnectionCheck" resultType="com.audio.userVO.userVO">
+		select num_id, mem_id, mem_google, mem_day
+		from members
+		where mem_google = #{mem_google} and mem_id = #{mem_id}
+	</select>
 
-
+	<insert id="setKakaoConnection">
+		insert into members(mem_id, mem_kakao)
+		value(#{mem_id},#{mem_kakao})
+	
+	</insert>
+	<select id ="naverConnectionCheck" resultType = "map">
+	select num_id, mem_id, mem_naver, mem_day
+	from members
+	where mem_naver = #{mem_naver} and mem_id = #{mem_id}
+	
+	</select>
+	<insert id="setnaverConnection">
+		insert into members(mem_id, mem_naver)
+		value(#{mem_id},#{mem_naver})
+	
+	</insert>
+	
+	
+	<insert id="setgoogleConnection">
+		insert into members(mem_id,mem_google)
+		values(#{mem_id},#{mem_google})
+	</insert>
+	
 </mapper>
