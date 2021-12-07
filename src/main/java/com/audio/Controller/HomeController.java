@@ -20,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.audio.Service.PayService;
 import com.audio.Service.userService;
 import com.audio.VO.userVO;
 import com.audio.naver.NaverLoginBO;
@@ -37,6 +39,10 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.util.Utils;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
 
 
@@ -47,13 +53,18 @@ import com.google.api.client.json.JsonFactory;
 public class HomeController {
 	@Inject
 	userService service;
+	PayService payservice;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
 	@Inject
 	NaverLoginBO naverloginbo;
 	private String apiResult = null;
-
+	private IamportClient iamport;
+	public HomeController() {
+		//rest api , api secret ������ ����
+		this.iamport = new IamportClient("4600918309383969","781a0ada65d5278b8abcc14a90eaf80508335ba02c984b140d61a3f7dd67baa8fe042d092847b1f2");
+	}
 	
 	
 	
@@ -309,6 +320,13 @@ public class HomeController {
 		}
 		
 		
+	}
+	@ResponseBody
+	@RequestMapping(value="/verifyIamport.do/{imp_uid}")
+	public IamportResponse<Payment> paymentByImpUid(Model model, Locale locale,HttpSession session, @PathVariable(value="imp_uid") String imp_uid) throws IamportResponseException, IOException {
+		
+		
+		return iamport.paymentByImpUid(imp_uid);
 	}
 	
 	

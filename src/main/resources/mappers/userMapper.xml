@@ -9,7 +9,7 @@
 			values(#{mem_id}, #{mem_pass}, #{mem_name}, #{mem_phone})
 	</insert>
 	
-	<select id="Login" resultType="com.audio.userVO.userVO">
+	<select id="Login" resultType="com.audio.VO.userVO">
 		select
 			mem_id, mem_pass, mem_name, mem_phone
 		from
@@ -23,7 +23,7 @@
 	where mem_kakao = #{id} and mem_id = #{email}
 	
 	</select>
-	<select id ="googleConnectionCheck" resultType="com.audio.userVO.userVO">
+	<select id ="googleConnectionCheck" resultType="com.audio.VO.userVO">
 		select num_id, mem_id, mem_google, mem_day
 		from members
 		where mem_google = #{mem_google} and mem_id = #{mem_id}

@@ -81,7 +81,7 @@ function iamport(month){
 		let product_name = '';
 		let p_price = 0;
 		if(month == 1){
-			p_price = 1;
+			p_price = 100;
 			product_name = '1개월 이용권';
 		}else if(month == 6){
 			p_price = 16000;
@@ -127,11 +127,11 @@ function iamport(month){
 			참고하세요.
 			나중에 포스팅 해볼게요.
 			*/
-		    name : product_name , //결제창에서 보여질 이름
-		    amount : p_price, //실제 결제되는 가격
-		    buyer_email : member_email,
-		    buyer_name : user_idx, //유저 인덱스로 넣음
-		    buyer_tel : '010-1234-5678',
+			 name : product_name , //결제창에서 보여질 이름
+			 amount : p_price, //실제 결제되는 가격
+			 buyer_email : member_email,
+			 buyer_name : user_idx, //유저 인덱스로 넣음
+			 buyer_tel : '010-1234-5678',
 		    //buyer_addr : '선택',
 		    //buyer_postcode : '선택',
 		    m_redirect_url: 'http://localhost:8080/orderCompleteMobile.do'
@@ -144,14 +144,20 @@ function iamport(month){
 			// 결제검증
 			$.ajax({
 	        	type : "POST",
-	        	url : contextPath+"/verifyIamport.do/" + rsp.imp_uid 
+	        	url : "${pageContext.request.contextPath}/verifyIamport.do/" + rsp.imp_uid 
 	        }).done(function(data) {
 	        	// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+	        	console.log(rsp.paid_amount == data.response.amount);
+	        	console.log(rsp.paid_amount);
+	        	console.log(data.response.amount);
+	        	console.log(rsp);
+	        	
+	        	
 	        	if(rsp.paid_amount == data.response.amount){
 		        	alert("결제 및 결제검증완료");
 		        	$.ajax({
 							type: "POST",
-							url: contextPath+"/paysuccess.do",
+							url: "${pageContext.request.contextPath}/verifyIamport.do//paysuccess.do",
 							dataType: "JSON",
 							data : {
 								productname : data.response.name,

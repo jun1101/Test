@@ -1,38 +1,31 @@
-package com.audio.DAO;
+package com.audio.Service;
 
 import javax.inject.Inject;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.stereotype.Repository;
-
+import com.audio.DAO.PayDAO;
 import com.audio.VO.PayVO;
 import com.audio.VO.userVO;
-@Repository
-public class PayDAOimpl implements PayDAO {
+
+public class PayServiceimpl implements PayService{
 	
 	@Inject
-	private SqlSession sql;
-	
-	
-
+	PayDAO dao;
 
 	@Override
 	public void insertPay(PayVO vo) throws Exception {
-		sql.insert("payMapper.insertPay",vo);
-		
-		
+		dao.insertPay(vo);
 	}
 
 	@Override
 	public int firstPayUpdate(userVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sql.update("payMapper.firstPayUpdate",vo);
+		return dao.firstPayUpdate(vo);
 	}
 
 	@Override
 	public int payUpdate(userVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sql.update("payMapper.payUpdate", vo);
+		return dao.payUpdate(vo);
 	}
 
 }
