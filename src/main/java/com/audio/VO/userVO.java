@@ -1,8 +1,10 @@
 package com.audio.VO;
 
+import java.util.Date;
+
 public class userVO {
 
-	
+	private int num_id;
 	private String mem_id;
 	private String mem_pass;
 	private String mem_name;
@@ -10,11 +12,19 @@ public class userVO {
 	private String mem_kakao;
 	private String mem_google;
 	private String mem_naver;
+	private Date mem_day;
 	
 	
 	
 	
 	
+	
+	public int getNum_id() {
+		return num_id;
+	}
+	public void setNum_id(int num_id) {
+		this.num_id = num_id;
+	}
 	public String getMem_naver() {
 		return mem_naver;
 	}
@@ -58,5 +68,12 @@ public class userVO {
 	public void setMem_phone(String mem_phone) {
 		this.mem_phone = mem_phone;
 	}
+	public Date getMem_day() {
+		return mem_day;
+	}
+	public void setMem_day(Date mem_day) {
+		this.mem_day = mem_day;
+	}
+	
 	
 }

@@ -52,4 +52,10 @@
 		values(#{mem_id},#{mem_google})
 	</insert>
 	
+	<update id="firstPayUpdate">
+		UPDATE members set
+		mem_day = DATE_ADD(current_timestamp,INTERVAL #{month} MONTH)
+		where num_id = #{num_id}
+	</update>
+	
 </mapper>

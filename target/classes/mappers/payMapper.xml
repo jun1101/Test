@@ -10,7 +10,7 @@
 	<update id="firstPayUpdate">
 		UPDATE members set
 		mem_day = DATE_ADD(current_timestamp,INTERVAL #{month} MONTH)
-		where m_idx = #{m_idx}
+		where num_id = #{num_id}
 	</update>
 	
 	<update id="payUpdate">

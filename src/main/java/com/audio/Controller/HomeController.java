@@ -1,8 +1,13 @@
 package com.audio.Controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -112,9 +117,13 @@ public class HomeController {
 	public String postLogin(userVO vo, HttpServletRequest req, RedirectAttributes rttr, HttpSession session) throws Exception{
 		userVO login = service.Login(vo);
 		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
-		
+		userVO vo2 = new userVO();
 		if(login != null&& passMatch) {
 			session.setAttribute("member1", login);
+			session.setAttribute("num_id", vo2.getNum_id());
+			session.setAttribute("mem_day", vo2.getMem_day());
+			
+			
 			
 			System.out.println(session.getAttribute("member1"));
 			return "home";
@@ -328,8 +337,73 @@ public class HomeController {
 		
 		return iamport.paymentByImpUid(imp_uid);
 	}
-	
-	
+	@RequestMapping(value="/orderCompleteMobile.do", produces = "application/text; charset=utf8", method = RequestMethod.GET)
+	public String orderCompleteMobile(@RequestParam(required = false) String imp_uid, @RequestParam(required = false) String merchant_uid, Model model, Locale locale
+			, HttpSession session) throws IamportResponseException, IOException
+	{
+		
+		IamportResponse<Payment> result = iamport.paymentByImpUid(imp_uid);
+		
+		// ���� ���ݰ� ��������� ���Ѵ�.
+		if(result.getResponse().getAmount().compareTo(BigDecimal.valueOf(100)) == 0) {
+			System.out.println("�������");
+		}
+		
+		return "main.do";
+	}
+	@ResponseBody
+	@RequestMapping(value="/paysuccess.do", method=RequestMethod.POST)
+	public void paysuccess(@RequestParam Map<String, Object> param, HttpServletRequest request, HttpSession session) throws Exception{
+		int sessionidx= (int) session.getAttribute("num_id");
+		Date sessionpay=(Date) session.getAttribute("mem_day");
+		Date tday =new Date();
+		Calendar cal = Calendar.getInstance();
+		
+		System.out.println("여기탔음ㅋ");
+		int month = 1;
+		System.out.println(param.get("name"));
+		if(param.get("name").equals("1개월 이용권")) {
+			month=1;
+		}
+		else if(param.get("name").equals("6개월 이용권")) {
+			month=6;
+		}
+		else if(param.get("name").equals("1년 이용권")) {
+			month=12;
+		}
+		
+		userVO vo= new userVO();
+		vo.setNum_id(sessionidx);
+		int result = 0;
+		if(sessionpay ==null|| sessionpay.before(tday)) {
+			result = service.firstPayUpdate(vo);
+			System.out.println(result);
+			if(result ==1) {
+				cal.setTime(tday);
+				cal.add(Calendar.MONTH, month);
+				session.setAttribute("mem_day", cal.getTime());
+			}
+			
+		}
+		else {
+			result = payservice.payUpdate(vo);
+			System.out.println(result);
+			if(result ==1) {
+				cal.setTime(sessionpay);
+				cal.add(Calendar.MONTH, month);
+				session.setAttribute("mem_day", cal.getTime());
+				
+			}
+		}
+		if(result ==0) {
+			System.out.println("ㅇㅇㅇ");
+		}
+		System.out.println("끄으으으으으으읏");
+	}
 	
 	
 }
+	
+	
+	
+

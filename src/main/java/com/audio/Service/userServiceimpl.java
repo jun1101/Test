@@ -64,6 +64,12 @@ public class userServiceimpl implements userService{
 	public void setgoogleConnection(userVO vo) throws Exception {
 		dao.setgoogleConnection(vo);
 	}
+	
+	@Override
+	public int firstPayUpdate(userVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.firstPayUpdate(vo);
+	}
 
 	
 

@@ -82,5 +82,10 @@ public class userDAOimpl implements userDAO{
 		sql.insert("userMapper.setgoogleConnection", vo);
 		
 	}
+	@Override
+	public int firstPayUpdate(userVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.update("userMapper.firstPayUpdate",vo);
+	}
 
 }

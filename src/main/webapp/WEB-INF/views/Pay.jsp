@@ -147,17 +147,12 @@ function iamport(month){
 	        	url : "${pageContext.request.contextPath}/verifyIamport.do/" + rsp.imp_uid 
 	        }).done(function(data) {
 	        	// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
-	        	console.log(rsp.paid_amount == data.response.amount);
-	        	console.log(rsp.paid_amount);
-	        	console.log(data.response.amount);
-	        	console.log(rsp);
-	        	
-	        	
+	      
 	        	if(rsp.paid_amount == data.response.amount){
 		        	alert("결제 및 결제검증완료");
 		        	$.ajax({
 							type: "POST",
-							url: "${pageContext.request.contextPath}/verifyIamport.do//paysuccess.do",
+							url: "${pageContext.request.contextPath}/paysuccess.do",
 							dataType: "JSON",
 							data : {
 								productname : data.response.name,
@@ -165,6 +160,9 @@ function iamport(month){
 								purchaseuser : data.response.buyerName,
 								name : data.response.name
 							}
+							
+
+							
 						});
 	        	} else {
 	        		alert("결제 실패");

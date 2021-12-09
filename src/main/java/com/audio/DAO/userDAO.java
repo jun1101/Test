@@ -22,6 +22,7 @@ public interface userDAO {
 	
 	public void setgoogleConnection(userVO vo) throws Exception;
 	
+	public int firstPayUpdate(userVO vo) throws Exception;
 	
 	
 
