@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,8 +33,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.audio.Service.BoardService;
 import com.audio.Service.PayService;
 import com.audio.Service.userService;
+import com.audio.VO.BoardVO;
 import com.audio.VO.userVO;
 import com.audio.naver.NaverLoginBO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,6 +62,7 @@ public class HomeController {
 	@Inject
 	userService service;
 	PayService payservice;
+	BoardService boardservice;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
@@ -82,6 +86,16 @@ public class HomeController {
 	
 		return "home";
 	}
+	@RequestMapping(value = "/board.do", method = RequestMethod.GET)
+	 public String getList(Locale locale, Model model) throws Exception {
+		 List<BoardVO> list = null;
+		 list = boardservice.list();
+		 model.addAttribute("list", list);
+		 
+		 return "board/list";
+
+		 
+}
 	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
 	public String pay(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -352,9 +366,10 @@ public class HomeController {
 		return "main.do";
 	}
 	@ResponseBody
-	@RequestMapping(value="/paysuccess.do", method=RequestMethod.POST)
-	public void paysuccess(@RequestParam Map<String, Object> param, HttpServletRequest request, HttpSession session) throws Exception{
-		int sessionidx= (int) session.getAttribute("num_id");
+	@RequestMapping(value="/paysuccess.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public void paysuccess(@RequestParam Map<String, Object> param, HttpServletRequest requet, HttpSession session) throws Exception{
+		System.out.println((int)session.getAttribute("num_id"));
+		int sessionidx= (int)(session.getAttribute("num_id"));
 		Date sessionpay=(Date) session.getAttribute("mem_day");
 		Date tday =new Date();
 		Calendar cal = Calendar.getInstance();
@@ -373,7 +388,9 @@ public class HomeController {
 		}
 		
 		userVO vo= new userVO();
+		vo.setMonth(month);
 		vo.setNum_id(sessionidx);
+		
 		int result = 0;
 		if(sessionpay ==null|| sessionpay.before(tday)) {
 			result = service.firstPayUpdate(vo);
@@ -400,6 +417,8 @@ public class HomeController {
 		}
 		System.out.println("끄으으으으으으읏");
 	}
+	
+	
 	
 	
 }

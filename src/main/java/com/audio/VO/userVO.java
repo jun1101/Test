@@ -13,6 +13,7 @@ public class userVO {
 	private String mem_google;
 	private String mem_naver;
 	private Date mem_day;
+	private int month;
 	
 	
 	
@@ -73,6 +74,12 @@ public class userVO {
 	}
 	public void setMem_day(Date mem_day) {
 		this.mem_day = mem_day;
+	}
+	public int getMonth() {
+		return month;
+	}
+	public void setMonth(int month) {
+		this.month = month;
 	}
 	
 	

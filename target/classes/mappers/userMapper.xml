@@ -11,7 +11,7 @@
 	
 	<select id="Login" resultType="com.audio.VO.userVO">
 		select
-			mem_id, mem_pass, mem_name, mem_phone
+			num_id,mem_id, mem_pass, mem_name, mem_phone
 		from
 			members
 		where mem_id = #{mem_id}
@@ -54,7 +54,7 @@
 	
 	<update id="firstPayUpdate">
 		UPDATE members set
-		mem_day = DATE_ADD(current_timestamp,INTERVAL #{month} MONTH)
+		mem_day = DATE_ADD(current_timestamp,INTERVAL '1' MONTH)
 		where num_id = #{num_id}
 	</update>
 	

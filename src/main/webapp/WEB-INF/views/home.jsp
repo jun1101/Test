@@ -60,5 +60,6 @@
         this.style.backgroundColor = 'white';
     });
     </script>
+    <p><a href="${pageContext.request.contextPath}/board.do">게시물 목록</a></p>
 </body>
 </html>
