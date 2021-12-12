@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,19 +23,22 @@
  </thead>
  
  <tbody>
- <c:forEach items="${list}" var="list">
+ <c:forEach items="${list}" var="val">
  <tr>
- 	<td>${list.bno}</td>
- 	<td>${list.title}</td>
- 	<td>${list.regDate}</td>
- 	<td>${list.writer}</td>
- 	<td>${list.viewCnt}</td>
+ 	<td>${val.bno}</td>
+ 	<td>
+ 	<a href="${pageContext.request.contextPath}/view.do?bno=${val.bno}">${val.title}</a>
+ 	</td>
+ 	<td>${val.regDate}</td>
+ 	<td>${val.writer}</td>
+ 	<td>${val.viewCnt}</td>
  	</tr>
  	</c:forEach>
   
  </tbody>
 
 </table>
+<a href="${pageContext.request.contextPath}/boardWrite.do">게시판작성</a>
 
 </body>
 </html>

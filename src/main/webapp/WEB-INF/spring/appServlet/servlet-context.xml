@@ -26,6 +26,9 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.audio" />
+	<context:component-scan base-package="com.audio.VO" />
+
+
 	<beans:bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	
 	<!-- api properties 가져오기 -->

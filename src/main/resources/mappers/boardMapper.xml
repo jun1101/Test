@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boardMapper">
-	<select id="list" resultType="com.audio.VO.BoardVO">
+	<select id="list" resultType="com.audio.VO.boardVO">
+	SELECT
+		bno, title, content, writer, regDate, viewCnt
+	FROM tbl_board
+	ORDER BY bno DESC
+	</select>
+	
+	<insert id="board_write" parameterType="com.audio.VO.boardVO">
+	insert into
+	tbl_board(title, content, writer)
+		values(#{title}, #{content}, #{writer})
+	
+	</insert>
+	
+	<select id="board_view" parameterType="int" resultType="com.audio.VO.boardVO">
 	select
 		bno, title, content, writer, regDate, viewCnt
-	from tbl_board
-	
+		
+	from
+		tbl_board
+	where
+		bno = #{bno}
 	
 	</select>
 </mapper>

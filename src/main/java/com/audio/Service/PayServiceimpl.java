@@ -2,10 +2,13 @@ package com.audio.Service;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Service;
+
 import com.audio.DAO.PayDAO;
 import com.audio.VO.PayVO;
 import com.audio.VO.userVO;
 
+@Service
 public class PayServiceimpl implements PayService{
 	
 	@Inject

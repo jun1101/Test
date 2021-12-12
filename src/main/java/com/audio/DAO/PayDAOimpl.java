@@ -26,13 +26,13 @@ public class PayDAOimpl implements PayDAO {
 	@Override
 	public int firstPayUpdate(userVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sql.update("payMapper.firstPayUpdate",vo);
+		return sql.update("userMapper.firstPayUpdate",vo);
 	}
 
 	@Override
 	public int payUpdate(userVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return sql.update("payMapper.payUpdate", vo);
+		return sql.update("userMapper.payUpdate", vo);
 	}
 
 }

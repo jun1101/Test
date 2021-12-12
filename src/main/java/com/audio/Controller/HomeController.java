@@ -36,7 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.audio.Service.BoardService;
 import com.audio.Service.PayService;
 import com.audio.Service.userService;
-import com.audio.VO.BoardVO;
+import com.audio.VO.boardVO;
 import com.audio.VO.userVO;
 import com.audio.naver.NaverLoginBO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,13 +61,19 @@ import com.siot.IamportRestClient.response.Payment;
 public class HomeController {
 	@Inject
 	userService service;
+	@Inject
 	PayService payservice;
+	@Inject
 	BoardService boardservice;
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
+	
 	@Inject
 	NaverLoginBO naverloginbo;
+	
 	private String apiResult = null;
 	private IamportClient iamport;
 	public HomeController() {
@@ -81,21 +87,44 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model,HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-	
+		System.out.println((int)session.getAttribute("num_id"));
+		System.out.println(Integer.parseInt(String.valueOf(session.getAttribute("num_id"))));
 		return "home";
 	}
 	@RequestMapping(value = "/board.do", method = RequestMethod.GET)
 	 public String getList(Locale locale, Model model) throws Exception {
-		 List<BoardVO> list = null;
-		 list = boardservice.list();
+		 List<boardVO> list = boardservice.list();
 		 model.addAttribute("list", list);
 		 
 		 return "board/list";
 
 		 
 }
+	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.GET)
+	public String boardWrite(Locale locale, Model model) {
+		
+	
+		return "board/Write";
+	}
+	
+	@RequestMapping(value = "/postWrite.do", method = RequestMethod.GET)
+	public String postWrite(boardVO vo) throws Exception{
+		boardservice.board_write(vo);
+		
+		return "redirect:/board.do";
+		
+	}
+	@RequestMapping(value = "/view.do", method = RequestMethod.GET)
+	public String boardView(@RequestParam("bno") int bno, Model model) throws Exception{
+		boardVO vo =boardservice.board_view(bno);
+		model.addAttribute("view", vo);
+		
+		return "board/view";
+		
+	}
+	
 	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
 	public String pay(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -132,10 +161,11 @@ public class HomeController {
 		userVO login = service.Login(vo);
 		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
 		userVO vo2 = new userVO();
+		
 		if(login != null&& passMatch) {
 			session.setAttribute("member1", login);
-			session.setAttribute("num_id", vo2.getNum_id());
-			session.setAttribute("mem_day", vo2.getMem_day());
+			session.setAttribute("num_id", login.getNum_id());
+			session.setAttribute("mem_day", login.getMem_day());
 			
 			
 			

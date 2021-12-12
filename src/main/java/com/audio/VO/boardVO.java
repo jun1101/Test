@@ -2,7 +2,7 @@ package com.audio.VO;
 
 import java.util.Date;
 
-public class BoardVO {
+public class boardVO {
 	private int bno;
 	private String title;
 	private String content;

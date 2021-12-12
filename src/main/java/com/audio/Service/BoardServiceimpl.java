@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.audio.DAO.BoardDAO;
-import com.audio.VO.BoardVO;
+import com.audio.VO.boardVO;
 @Service
 public class BoardServiceimpl implements BoardService{
 	
@@ -15,9 +15,20 @@ public class BoardServiceimpl implements BoardService{
 	private BoardDAO dao;
 
 	@Override
-	public List<BoardVO> list() throws Exception {
+	public List<boardVO> list() throws Exception {
 		// TODO Auto-generated method stub
 		return dao.list();
+	}
+
+	@Override
+	public void board_write(boardVO vo) throws Exception {
+		dao.board_write(vo);
+	}
+
+	@Override
+	public boardVO board_view(int bno) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.board_view(bno);
 	}
 
 

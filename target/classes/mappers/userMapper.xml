@@ -54,7 +54,7 @@
 	
 	<update id="firstPayUpdate">
 		UPDATE members set
-		mem_day = DATE_ADD(current_timestamp,INTERVAL '1' MONTH)
+		mem_day = DATE_ADD(current_timestamp,INTERVAL '2' MONTH)
 		where num_id = #{num_id}
 	</update>
 	
