@@ -1,7 +1,11 @@
+
 package com.audio.Controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,6 +19,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
@@ -23,6 +28,8 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +38,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.audio.Service.BoardService;
+import com.audio.Service.FileService;
 import com.audio.Service.PayService;
 import com.audio.Service.userService;
+import com.audio.VO.FileVO;
 import com.audio.VO.boardVO;
 import com.audio.VO.userVO;
+import com.audio.file.FTPUpLoader;
 import com.audio.naver.NaverLoginBO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -66,6 +77,9 @@ public class HomeController {
 	@Inject
 	BoardService boardservice;
 	
+	@Inject
+	FileService fileservice;
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
@@ -89,14 +103,52 @@ public class HomeController {
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
 	public String home(Locale locale, Model model,HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		System.out.println((int)session.getAttribute("num_id"));
-		System.out.println(Integer.parseInt(String.valueOf(session.getAttribute("num_id"))));
+//		System.out.println(Integer.parseInt(String.valueOf(session.getAttribute("num_id"))));
 		return "home";
 	}
 	@RequestMapping(value = "/board.do", method = RequestMethod.GET)
-	 public String getList(Locale locale, Model model) throws Exception {
-		 List<boardVO> list = boardservice.list();
+	 public String getList(Locale locale, Model model,@RequestParam("num") int num) throws Exception {
+		int count = boardservice.count();
+		
+		int postNum = 10;
+		
+		int pageNum = (int)Math.ceil((double)count/postNum);
+		
+		int displayPost = (num - 1) * postNum;
+		
+		int pageNum_cnt = 5;
+		
+		int endPageNum = (int)(Math.ceil((double)num/ (double)pageNum_cnt) * pageNum_cnt);
+		
+		int startPageNum = endPageNum - (pageNum_cnt -1);
+		
+		// 마지막 번호 재계산
+		int endPageNum_tmp = (int)(Math.ceil((double)count / (double)pageNum_cnt));
+		 
+		if(endPageNum > endPageNum_tmp) {
+		 endPageNum = endPageNum_tmp;
+		}
+		
+		boolean prev = startPageNum == 1 ? false : true;
+		boolean next = endPageNum * pageNum_cnt >= count ? false : true;
+		
+		
+		
+		List<boardVO> list = boardservice.listPage(displayPost, postNum);
 		 model.addAttribute("list", list);
+		 model.addAttribute("pageNum", pageNum);
+		 
+		// 시작 및 끝 번호
+		 model.addAttribute("startPageNum", startPageNum);
+		 model.addAttribute("endPageNum", endPageNum);
+
+		 // 이전 및 다음 
+		 model.addAttribute("prev", prev);
+		 model.addAttribute("next", next);
+		 
+		 model.addAttribute("select", num);
+		 
+		 Page page = new Page();
 		 
 		 return "board/list";
 
@@ -110,10 +162,11 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/postWrite.do", method = RequestMethod.GET)
-	public String postWrite(boardVO vo) throws Exception{
+	public String postWrite(boardVO vo,  Model model ) throws Exception{
 		boardservice.board_write(vo);
 		
-		return "redirect:/board.do";
+		
+		return "redirect:/board.do?num=1";
 		
 	}
 	@RequestMapping(value = "/view.do", method = RequestMethod.GET)
@@ -123,6 +176,40 @@ public class HomeController {
 		
 		return "board/view";
 		
+	}
+	
+	@RequestMapping(value = "/modify.do", method = RequestMethod.GET)
+	public String getModify(Locale locale, Model model,@RequestParam("bno")int bno) throws Exception{
+		boardVO vo = boardservice.board_view(bno);
+		model.addAttribute("view", vo);
+		
+		
+		return "board/modify";
+		
+	}
+	
+		
+		
+		
+		
+	
+	
+	@RequestMapping(value ="/board_modify.do", method = RequestMethod.POST)
+	public String boardModify(boardVO vo, Model model) throws Exception{
+		
+		boardservice.board_modify(vo);
+		
+				
+		
+		return "redirect:/view.do?bno="+vo.getBno();
+		
+	}
+	
+	@RequestMapping(value = "/board_delete.do", method = RequestMethod.GET)
+	public String getDelete(@RequestParam("bno") int bno) throws Exception {
+		boardservice.board_delete(bno);
+		
+		return "redirect:/board.do?num=1";
 	}
 	
 	@RequestMapping(value = "/pay.do", method = RequestMethod.GET)
@@ -161,11 +248,14 @@ public class HomeController {
 		userVO login = service.Login(vo);
 		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
 		userVO vo2 = new userVO();
+		String userrole = login.getUserrole();
 		
 		if(login != null&& passMatch) {
 			session.setAttribute("member1", login);
 			session.setAttribute("num_id", login.getNum_id());
 			session.setAttribute("mem_day", login.getMem_day());
+			session.setAttribute("userrole", userrole);
+			System.out.println(userrole);
 			
 			
 			
@@ -448,10 +538,178 @@ public class HomeController {
 		System.out.println("끄으으으으으으읏");
 	}
 	
+	private String getBrowser(HttpServletRequest request) {
+		String header = request.getHeader("User-Agent");
+		 if (header.indexOf("MSIE") > -1) {
+             return "MSIE";
+        } else if (header.indexOf("Chrome") > -1) {
+             return "Chrome";
+        } else if (header.indexOf("Opera") > -1) {
+             return "Opera";
+        } else if (header.indexOf("Firefox") > -1) {
+             return "Firefox";
+        } else if (header.indexOf("Mozilla") > -1) {
+             if (header.indexOf("Firefox") > -1) {
+                  return "Firefox";
+             }else{
+                  return "MSIE";
+             }
+        }
+        return "MSIE";
+		
+		
+	}
+	
+	public void setDisposition(String filename, HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String browser = getBrowser(request);
+        String dispositionPrefix = "attachment; filename=";
+        String encodedFilename = null;
+
+        if (browser.equals("MSIE")) {
+            encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll(
+            "\\+", "%20");
+        } else if (browser.equals("Firefox")) {
+            encodedFilename = "\""
+            + new String(filename.getBytes("UTF-8"), "8859_1") + "\"";
+        } else if (browser.equals("Opera")) {
+            encodedFilename = "\""
+            + new String(filename.getBytes("UTF-8"), "8859_1") + "\"";
+        } else if (browser.equals("Chrome")) {
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < filename.length(); i++) {
+            char c = filename.charAt(i);
+            if (c > '~') {
+                sb.append(URLEncoder.encode("" + c, "UTF-8"));
+            } else {
+                sb.append(c);
+            }
+        }
+        encodedFilename = sb.toString();
+        } else {
+            throw new IOException("Not supported browser");
+        }
+        response.setHeader("Content-Disposition", dispositionPrefix
+        + encodedFilename);
+        if ("Opera".equals(browser)) {
+            response.setContentType("application/octet-stream;charset=UTF-8");
+        }
+    }
+	
+	@ResponseBody
+	@RequestMapping(value = "/uploadForm.do", method=RequestMethod.POST)
+	public ResponseEntity<String[]> uploadFormAJAX(MultipartFile[] files, FileVO fvo,userVO uvo, HttpSession session) throws Exception{
+		int len = files == null ? 0: files.length;
+		String userrole = uvo.getUserrole();
+		String idx = Integer.toString(fvo.getUploaduser());
+		int m_idx = fvo.getUploaduser();
+		
+		try {
+			String[] uploadedFiles = new String[len];
+			for(int i=0; i<len; i++) {
+				File savefile = new File(files[i].getOriginalFilename());
+				FileInputStream fis = (FileInputStream) files[i].getInputStream();
+				uploadedFiles[i] = files[i].getOriginalFilename(); // ���Ͽ�
+				String filepath;
+				String filesize;
+				String filename;
+				String originalfilename;
+				if(userrole.equals("admin")) {
+					filesize = FTPUpLoader.byteCalculation(files[i].getSize());
+					filename = files[i].getOriginalFilename();
+					String[] nameresult = filename.split("_",3);
+					System.out.println(nameresult[0]+" / "+nameresult[1]+" / " +nameresult[2]);
+					originalfilename = nameresult[2];
+					int uidx= Integer.parseInt(nameresult[1]);
+					fvo.setUploaduser(uidx);
+					
+					filepath = FTPUpLoader.FtpUpLoad(savefile, fis, nameresult[1], userrole);
+					
+					
+					if(nameresult[0].equals("S")) {
+						fvo.setFilesort("S");
+					}
+					else if (nameresult[0].equals("H")) {
+						fvo.setFilesort("H");
+					}
+					else {
+						fvo.setFilesort("N");
+					}
+				}
+				else {
+					filepath = FTPUpLoader.FtpUpLoad(savefile, fis, idx, userrole);
+					filesize = FTPUpLoader.byteCalculation(files[i].getSize());
+					filename = idx+'_'+files[i].getOriginalFilename();
+					originalfilename = files[i].getOriginalFilename();
+					fvo.setFilesort("U");
+				}
+				
+				if(filepath == "error") {
+					System.out.println("업로드 에러");
+				}else {
+					fvo.setFilepath(filepath);
+					fvo.setFilesize(filesize);
+					fvo.setFilename(filename);
+					fvo.setOriginalfilename(originalfilename);
+					fileservice.firstFileUpload(fvo);
+					
+					if(userrole.equals("admin")) {
+						int doneResult = fileservice.fileUploadDone(fvo);
+						if(doneResult == 0) {
+							System.out.println("같은 정보인 파일중 U인 파일이 DB에 없음");
+						}else {
+							System.out.println("D로 상태 변경 완료");
+						}
+					}
+				}
+				
+			}
+			return new ResponseEntity<>(uploadedFiles, HttpStatus.CREATED);
+			}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return new ResponseEntity<>(new String[] { e.getMessage() },HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	@RequestMapping(value="/fileDownLoadForm.do")
+	public String fileDownLoad(HttpSession session, Model model) throws Exception {
+		
+		int m_idx = (int) session.getAttribute("m_idx");
+		System.out.println(m_idx);
+		List<FileVO> result = fileservice.list(m_idx);
+		model.addAttribute("list",result);
+		
+		return"fileDownLoad";
+	}
+	
+	@RequestMapping(value="/fileDownLoad.do", produces="text/plain;charset=UTF-8")
+    public void ftpDownload(HttpServletRequest request, HttpServletResponse response){
+        int f_idx = Integer.parseInt(request.getParameter("f_idx"));
+        FileVO fileVO = new FileVO();
+        boolean result = false;
+        try{
+            fileVO = fileservice.getFileInfo(f_idx); 
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        try {
+            setDisposition(fileVO.getFilename(), request, response);
+            result = FTPUpLoader.download(fileVO, response);
+            if(!result){
+               System.out.println("다운로드 에러!!!!!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
 	
 	
 	
 }
+
 	
 	
 	

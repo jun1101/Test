@@ -5,61 +5,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
+<script src="resources/js/jQuery.form.js" type="text/javascript"></script>
+<script src="resources/js/upload.js" type="text/javascript"></script>
 	<title>Audio-cleaner</title>
+	<style type="text/css">
+	
+	.video-frame::before{
+    content: '';
+    background: linear-gradient(-135deg,black,transparent);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    z-index:-100;
+    }
+    .video-frame video{
+    position:fixed;
+    min-width: 100%;
+    min-height:100%;
+    z-index:-1;
+    }
+    .percent, .status, .file_sentence{
+    color:#fff;
+    
+    
+    
+    }
+
+	
+	</style>
 </head>
 <body>
 <%@include file="../views/header.jsp" %>
-<section id="ex9">
-        <style>
-            #ex9 .upload-box{
-                width:500px;
-                height: 300px;
-                border:1px solid gray;
-                box-shadow: 2px 3px 9px hsl(0, 0%, 47%);
-                padding:10px;
-            }
-        </style>
-        <h1>파일업로드 : DND & Trigger</h1>
-        <div class="upload-box">
-            <button class="btn-upload">파일선택</button>
-            <input class="btn-file d-none" type="file"> <!--파일 input box 형태-->     
-        </div>
-    </section>
-    <hr>
-<script> var sec9 = document.querySelector('#ex9');
-    var btnUpload = sec9.querySelector('.btn-upload');
-    var inputFile = sec9.querySelector('input[type="file"]');
-    var uploadBox = sec9.querySelector('.upload-box');
 
-    /* 박스 안에 Drag 들어왔을 때 */
-    uploadBox.addEventListener('dragenter', function(e) {
-        console.log('dragenter');
-    });
-    
-    /* 박스 안에 Drag를 하고 있을 때 */
-    uploadBox.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        console.log('dragover');
+<div class ="container">
+	<div class="video-frame">
+	<video src="resources/video/BackGround.mp4" autoplay muted loop></video>
+	
+	<main id="main">
+	<div class="files">
+		<div class="right">
+			<div class="fileDrop">
+				<label class="file-label" for="ajax-file">
+				<img src="resources/img/music3.png" style="width: auto; height: 105px;">
+				</label><br>
+				<h5 class="file_sentence">Click Image or Drag & Drop<p>your sound file here</h5>
+				<br><br>
+				<div class="uploadedList"></div>
+				<div id="percent" class="percent">0 %</div>
+				<div id="status" class="status">ready</div>
+				
+				<form action="${pageContext.request.contextPath}/uploadForm.do" id="form3" method="POST" enctype="multipart/form-data">
+					<input type="file" name="files" id="ajax-file" style="display: none;" />
+					<input type="hidden" name="uploaduser" id="uploaduser" value="${m_idx}">
+					<input type="hidden" name="userrole" id="userrole" value="${userrole}"/>
+					
+					<button type="submit" name="submit" class="upsubmit"><img src="resources/img/upload.png" class="upbtn"></button>
+				</form>
+				<input type="hidden" name="mem_pay" id="mem_pay" value="${mem_pay}"/>
+				
+			</div>
+		</div>
+	</div>
+	</main>
 
-        this.style.backgroundColor = 'green';
-    });
-    
-    /* 박스 밖으로 Drag가 나갈 때 */
-    uploadBox.addEventListener('dragleave', function(e) {
-        console.log('dragleave');
-
-        this.style.backgroundColor = 'white';
-    });
-    
-    /* 박스 안에서 Drag를 Drop했을 때 */
-    uploadBox.addEventListener('drop', function(e) {
-        e.preventDefault();
-
-        console.log('drop');
-        this.style.backgroundColor = 'white';
-    });
-    </script>
-    <p><a href="${pageContext.request.contextPath}/board.do">게시물 목록</a></p>
+</div>
+</div>
+        
 </body>
 </html>

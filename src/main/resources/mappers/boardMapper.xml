@@ -5,7 +5,7 @@
 	SELECT
 		bno, title, content, writer, regDate, viewCnt
 	FROM tbl_board
-	ORDER BY bno DESC
+	
 	</select>
 	
 	<insert id="board_write" parameterType="com.audio.VO.boardVO">
@@ -25,4 +25,68 @@
 		bno = #{bno}
 	
 	</select>
+	
+	<update id="board_modify" parameterType="com.audio.VO.boardVO">
+		UPDATE tbl_board
+			SET	title = #{title},
+				content = #{content},
+				writer = #{writer}
+			WHERE
+				 bno = #{bno}
+	</update>
+	<update id="board_update" parameterType="com.audio.VO.boardVO">
+		update tbl_board
+			 set 
+			 	title = #{title},
+			 	content = #{content},
+			 	writer = #{writer}
+			 where bno = #{bno}
+	</update>
+	
+	<delete id="board_delete" parameterType="int">
+		delete
+			from tbl_board
+		where bno = #{bno}
+	</delete>
+	
+	<select id ="count" resultType="int">
+		select count(bno) from tbl_board
+	</select>
+	
+	<select id="listPage" parameterType="hashMap" resultType="com.audio.VO.boardVO">
+		 select
+		  bno, title, writer, regDate, viewCnt
+		 from tbl_board
+		 order by bno desc
+		  limit #{displayPost}, #{postNum}
+</select>
+<select id="listPageSearch" parameterType="hashMap" resultType="com.audio.VO.boardVO">
+ select
+  bno, title, writer, regDate, viewCnt
+ from tbl_board
+ 
+ <if test='searchType.equals("title")'>
+  WHERE title LIKE concat('%', #{keyword}, '%')
+ </if>
+ 
+ <if test='searchType.equals("content")'>
+  WHERE content LIKE concat('%', #{keyword}, '%')
+ </if>
+ 
+ <if test='searchType.equals("title_content")'>
+  WHERE title LIKE concat('%', #{keyword}, '%') 
+   or content LIKE concat('%', #{keyword}, '%')
+ </if>
+ 
+ <if test='searchType.equals("writer")'>
+  WHERE writer LIKE concat('%', #{keyword}, '%')
+ </if>
+ 
+ order by bno desc
+  limit #{displayPost}, #{postNum}
+</select> 
+
+
+	
+	
 </mapper>

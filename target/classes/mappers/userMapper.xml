@@ -11,7 +11,7 @@
 	
 	<select id="Login" resultType="com.audio.VO.userVO">
 		select
-			num_id,mem_id, mem_pass, mem_name, mem_phone
+			num_id,mem_id, mem_pass, mem_name, mem_phone,userrole
 		from
 			members
 		where mem_id = #{mem_id}

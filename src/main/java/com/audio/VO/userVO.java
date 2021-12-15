@@ -14,12 +14,19 @@ public class userVO {
 	private String mem_naver;
 	private Date mem_day;
 	private int month;
+	private String userrole;
 	
 	
 	
 	
 	
 	
+	public String getUserrole() {
+		return userrole;
+	}
+	public void setUserrole(String userrole) {
+		this.userrole = userrole;
+	}
 	public int getNum_id() {
 		return num_id;
 	}

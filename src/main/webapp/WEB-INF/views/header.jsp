@@ -5,6 +5,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<style>
+.navbar_logo h1 a{
+	color:#fff;
+}
+.nav_menu li,.nav_menu li a{
+color:#fff;
+}
+.nav_menu li:hover{
+background:black;
+}
+
+</style>
 <meta charset="UTF-8">
 <link href="resources/css/style.css" rel="stylesheet" type="text/css">
 
@@ -14,7 +27,7 @@
 	<header id ="header" class="fixed-top">
 		<nav class = "navbar">
 			<div class="navbar_logo">
-				<h1 class=nav_main_logo><img src="resources/img/gom.png"  /><a href="${pageContext.request.contextPath}/main.do">Audio-cleaner</a></h1>
+				<h2 class=nav_main_logo><img src="resources/img/gom.png"  /><a href="${pageContext.request.contextPath}/main.do">Audio-cleaner</a></h2>
 			
 			</div>
 			<ul class="nav_menu">
@@ -23,6 +36,7 @@
 				
 				<li><a href="${pageContext.request.contextPath}/join.do">Join</a></li>
 				<li><a href="${pageContext.request.contextPath}/login.do">Login</a></li>
+				<li><a href="${pageContext.request.contextPath}/board.do?num=1">게시물 목록</a></li>
 				
 			</c:if>
 			<c:if test ="${sessionId != null}">
