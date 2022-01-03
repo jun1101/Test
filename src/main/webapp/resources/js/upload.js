@@ -137,11 +137,13 @@ $(document).ready(function(){
 		},
 		
 		complete: function(xhr){
-			console.log(xhr);
-			let resJson = xhr.responseJSON;
+			console.log(xhr.responseJSON);
+			
+			let resJson = [];
+			resJson = xhr.responseJSON;
 			console.log(resJson);
 			if(xhr.status !== 201){
-				alert("업로드 에러 발생 ("+resJson[1]+")");
+				alert("업로드 에러 발생");
 				console.log(resJson.length);
 				location.reload();
 				

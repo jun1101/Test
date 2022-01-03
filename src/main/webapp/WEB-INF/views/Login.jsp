@@ -11,22 +11,42 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-
+<style>
+.video-frame::before{
+    content: '';
+    background: linear-gradient(-135deg,black,transparent);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    z-index:-100;
+    }
+    .video-frame video{
+    position:fixed;
+    min-width: 100%;
+    min-height:100%;
+    z-index:-1;
+    }
+</style>
 </head>
 <body>
-<%@include file="../views/header.jsp" %>
+<div class ="container">
+	<div class="video-frame">
+	<video src="resources/video/BackGround.mp4" autoplay muted loop></video>
+	</div>
+	<%@include file="../views/header.jsp" %>
+	
 
-	<form role="form" class="Login" action="${pageContext.request.contextPath}/signin.do" method="post">
+	<form name="loginform"id="loginform"role="form" class="Login" action="${pageContext.request.contextPath}/signin.do" method="post" onsubmit="return check();" >
 		<span>아이디</span>
-		<input type="email" placeholder="Email Address" name="mem_id" id="mem_id">
+		<input type="text" placeholder="Email Address" name="mem_id" id="mem_id">
 		<span>비밀번호</span>
 		<input type="password" placeholder="Password" name="mem_pass" id="mem_pass" >
 		
 		
-		<button type="submit" id="Login_Btn" name="Login_btn">로그인</button>
-		<c:if test="${msg == false}">
-  		 <p style="color:#f00;">로그인에 실패했습니다.</p>
-  		</c:if>
+		<button type="submit" id="Login_Btn" name="Login_Btn" value="N">로그인</button>
+		
   			
 	</form>
 	
@@ -50,8 +70,75 @@
 		<input type="hidden" name="email" id="googleEmail" /> 
 		<input type="hidden" name="googlelogin" id="googlelogin" />
 	</form>
-	
+	</div>
 <script>
+function check(){
+	 var e_RegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+	 var pw = $("#mem_pass").val();
+	 var objId = document.getElementById("mem_id");//메일
+	 var num = pw.search(/[0-9]/g);
+	 var eng = pw.search(/[a-z]/ig);
+	 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+	 var idChkVal = $("#Login_Btn").val();
+	 
+	 if(!document.loginform.mem_id.value){
+		 alert("아이디를 입력해주세요");
+		 return false;
+	 }
+	 if(!document.loginform.mem_pass.value){
+		 alert("비밀번호를 입력해주세요");
+	 	return false;
+	 }
+	
+	 if($("#mem_id").val().length > 30) {
+	     	alert("너무 긴 아이디는 사용할수 없습니다.");
+	     	return false;    
+	 }
+	 if(pw.length < 8 || pw.length > 20){
+
+		  alert(" 비밀번호를 8자리 ~ 20자리 이내로 입력해주세요.");
+		  return false;
+		 }else if(pw.search(/\s/) != -1){
+		  alert("비밀번호는 공백 없이 입력해주세요.");
+		  return false;
+		 }else if(num < 0 || eng < 0 || spe < 0 ){
+		  alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
+		  return false;
+		 } 
+	 
+	 $.ajax({
+			url : "${pageContext.request.contextPath}/loginChk",
+			type : "post",
+			dataType: "json",
+			data : {"mem_id" : $("#mem_id").val(),
+					"mem_pass" : $("#mem_pass").val()
+				
+			},
+			success : function(data){
+				console.log(data);
+				if(data == 1){
+					$("#idChk").attr("value", "Y");
+					alert("로그인이 완료되었습니다.");
+					
+				}else if(data == 0){
+					console.log("탓는데 시발아");
+					alert("로그인 정보가 일치하지않습니다 아이디와 비밀번호를 확인해주세요");
+					return false;
+					
+				}
+				}
+			
+		
+		});
+	
+	 
+	
+	
+}
+
+
+
+
 	$(document).ready(function() {
 		$.ajax({
 			type:'POST',
@@ -198,6 +285,8 @@
 	    
 		
 	}
+
+
 </script>
 
 

@@ -88,4 +88,20 @@ public class userDAOimpl implements userDAO{
 		return sql.update("userMapper.firstPayUpdate",vo);
 	}
 
+
+
+	@Override
+	public int idChk(userVO vo) throws Exception {
+		int result = sql.selectOne("userMapper.idChk", vo);
+		return result;
+	}
+
+
+
+	@Override
+	public int loginChk(userVO vo) throws Exception {
+		int result = sql.selectOne("userMapper.loginChk", vo);
+		return result;
+	}
+
 }

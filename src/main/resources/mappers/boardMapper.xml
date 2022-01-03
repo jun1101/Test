@@ -85,6 +85,11 @@
  order by bno desc
   limit #{displayPost}, #{postNum}
 </select> 
+<update id="boardHit" parameterType="int">
+	update tbl_board set
+	viewCnt = viewCnt+1
+	where bno = #{bno}
+</update>
 
 
 	

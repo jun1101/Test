@@ -24,7 +24,7 @@ a{
 
 }
 .nav_main_logo a{
-		font-size: 45px;
+		font-size: 10px;
 		
 		margin-left:10px;
 }
@@ -44,6 +44,9 @@ a{
 	margin-top:0;
 	display:inline-block
 	
+}
+.nav_menu li:hover{
+	opacity:50%;
 }
 .Join{
         width: 800px;

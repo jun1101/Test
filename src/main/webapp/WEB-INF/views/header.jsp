@@ -7,14 +7,14 @@
 <head>
 
 <style>
-.navbar_logo h1 a{
+.navbar_logo h2 a{
 	color:#fff;
 }
 .nav_menu li,.nav_menu li a{
 color:#fff;
 }
 .nav_menu li:hover{
-background:black;
+background:#a9a9a9;
 }
 
 </style>

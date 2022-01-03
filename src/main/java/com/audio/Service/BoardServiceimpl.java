@@ -5,6 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.audio.DAO.BoardDAO;
 import com.audio.VO.boardVO;
@@ -24,7 +26,7 @@ public class BoardServiceimpl implements BoardService{
 	public void board_write(boardVO vo) throws Exception {
 		dao.board_write(vo);
 	}
-
+	
 	@Override
 	public boardVO board_view(int bno) throws Exception {
 		
@@ -59,6 +61,13 @@ public class BoardServiceimpl implements BoardService{
 	public List<boardVO> listPageSearch(
 	  int displayPost, int postNum, String searchType, String keyword) throws Exception {
 	 return  dao.listPageSearch(displayPost, postNum, searchType, keyword);
+	}
+
+	@Override
+	public void board_Hit(int bno) throws Exception {
+		// TODO Auto-generated method stub
+		dao.boardHit(bno);
+		
 	}
 
 

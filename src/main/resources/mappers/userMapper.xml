@@ -9,12 +9,20 @@
 			values(#{mem_id}, #{mem_pass}, #{mem_name}, #{mem_phone})
 	</insert>
 	
+<!--	<select id="Login" resultType="com.audio.VO.userVO">
+		select
+			num_id,mem_id, mem_pass, mem_name, mem_phone,userrole
+		from
+			members
+		where mem_id = #{mem_id} 
+	</select>
+	-->
 	<select id="Login" resultType="com.audio.VO.userVO">
 		select
 			num_id,mem_id, mem_pass, mem_name, mem_phone,userrole
 		from
 			members
-		where mem_id = #{mem_id}
+		where mem_id = #{mem_id} and mem_pass = #{mem_pass}
 	</select>
 	
 	<select id ="kakaoConnectionCheck" resultType = "map">
@@ -57,5 +65,15 @@
 		mem_day = DATE_ADD(current_timestamp,INTERVAL '2' MONTH)
 		where num_id = #{num_id}
 	</update>
+	
+	<select id="idChk" resultType="int">
+		select count(*) from members
+		where mem_id = #{mem_id}
+	
+	</select>
+	<select id="loginChk" resultType="int">
+		select count(*) from members
+		where mem_id = #{mem_id} and mem_pass = #{mem_pass}
+	</select>
 	
 </mapper>

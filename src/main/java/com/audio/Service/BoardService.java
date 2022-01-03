@@ -21,6 +21,7 @@ public interface BoardService {
 	
 	public List<boardVO> listPageSearch(
 			  int displayPost, int postNum, String searchType, String keyword) throws Exception;
+	public void board_Hit(int bno) throws Exception;
 	
 
 	

@@ -30,5 +30,9 @@ public interface userService {
 	
 	public int firstPayUpdate(userVO vo) throws Exception;
 	
+	public int idChk(userVO vo) throws Exception;
+	
+	public int loginChk(userVO vo) throws Exception;
+	
 	
 }

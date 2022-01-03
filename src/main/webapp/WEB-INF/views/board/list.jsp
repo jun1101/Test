@@ -1,7 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page language="java" contentType="text/html"
+    pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +17,7 @@
 <title>게시물 목록</title>
 </head>
 <body>
-
+<%@include file="../header.jsp" %>
 <div class="row">
 <div class="col-xs-12">
 <table class= "table table-striped">

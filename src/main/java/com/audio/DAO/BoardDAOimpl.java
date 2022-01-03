@@ -93,6 +93,14 @@ public class BoardDAOimpl implements BoardDAO {
 		sql.update("boardMapper.count",bno);
 		
 	}
+
+
+	@Override
+	public void boardHit(int bno) throws Exception {
+		// TODO Auto-generated method stub
+		sql.update("boardMapper.boardHit", bno);
+		
+	}
 	
 	
 	

@@ -33,16 +33,56 @@
     
     
     }
+    .upbtn {
+	width:80px;
+	height:auto;
+	border: 0;
+}
+.upsubmit{
+	border: 0;
+	background-color: transparent;
+	width:80px;
+	height:auto;
+	border: 0;
+}
+div.files {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+  display: flex;
+  min-height: 95vh;
+}
+div.right {
+  width: 100%;
+  float: left;
+  box-sizing: border-box;
+  color: #fff;
+}
+.file_sentence{
+	font-weight: 600;
+}
+
+.percent, .status{
+	font-size: 20px;
+    font-weight: 600;
+}
+div.fileDrop{
+	height: 100%;
+	text-align: center;
+	margin-top: 300px;
+}
 
 	
 	</style>
 </head>
 <body>
-<%@include file="../views/header.jsp" %>
+
 
 <div class ="container">
 	<div class="video-frame">
 	<video src="resources/video/BackGround.mp4" autoplay muted loop></video>
+	</div>
+	<%@include file="../views/header.jsp" %>
 	
 	<main id="main">
 	<div class="files">

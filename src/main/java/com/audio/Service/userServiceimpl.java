@@ -71,6 +71,18 @@ public class userServiceimpl implements userService{
 		return dao.firstPayUpdate(vo);
 	}
 
+	@Override
+	public int idChk(userVO vo) throws Exception {
+		int result = dao.idChk(vo);
+		return result;
+	}
+
+	@Override
+	public int loginChk(userVO vo) throws Exception {
+		int result = dao.loginChk(vo);
+		return result;
+	}
+
 	
 
 	

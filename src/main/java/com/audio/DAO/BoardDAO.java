@@ -24,4 +24,6 @@ public interface BoardDAO {
 	   int displayPost, int postNum, String searchType, String keyword) throws Exception;
 	 
 	 public void boardCount(int bno) throws Exception;
+	 
+	 public void boardHit(int bno) throws Exception;
 }

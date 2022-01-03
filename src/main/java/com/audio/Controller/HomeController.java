@@ -171,6 +171,7 @@ public class HomeController {
 	}
 	@RequestMapping(value = "/view.do", method = RequestMethod.GET)
 	public String boardView(@RequestParam("bno") int bno, Model model) throws Exception{
+		boardservice.board_Hit(bno);
 		boardVO vo =boardservice.board_view(bno);
 		model.addAttribute("view", vo);
 		
@@ -222,6 +223,23 @@ public class HomeController {
 	public String Join(Locale locale, Model model) {
 		return "Join";
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/idChk", method = RequestMethod.POST)
+	public int idChk(userVO vo) throws Exception{
+		int result = service.idChk(vo);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/loginChk", method = RequestMethod.POST)
+	public int loginChk(userVO vo) throws Exception{
+		int result = service.loginChk(vo);
+		return result;
+	}
+	
+	
 	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
 	public String Login(HttpSession session, Model model) {
 		String naverAuthUrl = naverloginbo.getAuthorizationUrl(session);
@@ -234,40 +252,76 @@ public class HomeController {
 		
 		
 	}
+	
 	@RequestMapping(value = "signup.do", method = RequestMethod.POST)
-	public String postSignup(userVO vo) throws Exception{
-		String inputPass = vo.getMem_pass();
-		String pass = passEncoder.encode(inputPass);
-		vo.setMem_pass(pass);
-		System.out.println(vo.getMem_pass());
-		service.Join(vo);
+	public String postSignup(userVO vo,@RequestParam("mem_id")String mem_name,@RequestParam("mem_pass") String mem_pass) throws Exception{
+		//String inputPass = vo.getMem_pass();
+		
+		//String pass = passEncoder.encode(inputPass);
+		int result = service.idChk(vo);
+		System.out.println(result);
+		try {
+			
+			if(result == 1) {
+				return "Join";
+			}else if(result == 0) {
+				service.Join(vo);
+			}
+		} catch(Exception e) {
+			throw new RuntimeException();
+		}
 		return "home";
+		
+		
+		
+		
+		
+		
+		
+		
 	}
+	
 	@RequestMapping(value = "/signin.do", method = RequestMethod.POST)
 	public String postLogin(userVO vo, HttpServletRequest req, RedirectAttributes rttr, HttpSession session) throws Exception{
 		userVO login = service.Login(vo);
-		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
-		userVO vo2 = new userVO();
-		String userrole = login.getUserrole();
-		
-		if(login != null&& passMatch) {
-			session.setAttribute("member1", login);
-			session.setAttribute("num_id", login.getNum_id());
-			session.setAttribute("mem_day", login.getMem_day());
-			session.setAttribute("userrole", userrole);
-			System.out.println(userrole);
+		//boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
+		int result = service.loginChk(vo);
+		if(login != null) {
+			try {
+				
+				if(result == 0) {
+					return "Login";
+				}else if(result == 1) {
+					session.setAttribute("member1", login);
+							session.setAttribute("num_id", login.getNum_id());
+							session.setAttribute("mem_day", login.getMem_day());
+							
+							System.out.println(session.getAttribute("member1"));
+							return "home";
+				}
+			} catch(Exception e) {
+				throw new RuntimeException();
+			}
 			
-			
-			
-			System.out.println(session.getAttribute("member1"));
-			return "home";
-		}else {
-			rttr.addFlashAttribute("msg", false);
-			System.out.println("222");
-			return "Login";
 		}
+	//		session.setAttribute("member1", login);
+	//		session.setAttribute("num_id", login.getNum_id());
+	//		session.setAttribute("mem_day", login.getMem_day());
+	//		session.setAttribute("userrole", userrole);
+	//		System.out.println(userrole);
+	//		
+	//		
+	//		
+	//		System.out.println(session.getAttribute("member1"));
+	//		return "home";
+	//	}else {
+	//		System.out.println("222222222222222222222222222222222222222222222");
+	//		rttr.addFlashAttribute("msg", false);
+	//		System.out.println("222222222222222222222222222222222222222222222");
+	//		return "Login";
+	//	}
 		
-		
+		return "Login";
 		
 	}
 	@RequestMapping(value = "/Logout.do", method = RequestMethod.GET)
