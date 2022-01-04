@@ -6,9 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="resources/css/style2.css"/>
+<link rel="stylesheet" href="resources/css/border.css"/>
 </head>
 <body>
-<%@include file="../header.jsp" %>
+<div class ="container">
+	<div class="video-frame">
+	<video src="resources/video/BackGround.mp4" autoplay muted loop></video>
+	</div>
+	<%@include file="../header.jsp" %>
+	
 <form method="post">
 
 <label>제목</label>
@@ -30,5 +37,6 @@ ${view.content}
 <!--  <button type="submit">작성</button>
 -->
 </form>
+</div>
 </body>
 </html>

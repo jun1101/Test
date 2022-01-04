@@ -7,55 +7,10 @@
 <head>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="resources/css/style2.css"/>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-.video-frame::before{
-    content: '';
-    background: linear-gradient(-135deg,black,transparent);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top:0;
-    left:0;
-    z-index:-100;
-    }
-    .video-frame video{
-    position:fixed;
-    min-width: 100%;
-    min-height:100%;
-    z-index:-1;
-    }
-    .percent, .status, .file_sentence{
-    color:#fff;
-    
-    
-    
-    }
-    .title h2, section h1,.option li,.price h4{
-    color:#fff;}
-    card {
-  position: relative;
-  max-width: 300px;
-  height: auto;
-  background: linear-gradient(-45deg, #fe0847, #feae3f);
-  border-radius: 15px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  -webkit-box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  display:flex;
-}
-section {
-  width: 100%;
-  height: 110vh;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 100px 0 0 0;
-}
-</style>
+
 </head>
 <body>
 <div class ="container">

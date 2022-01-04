@@ -20,8 +20,10 @@ public class BoardDAOimpl implements BoardDAO {
 	
 	@Override
 	public List<boardVO> list() throws Exception {
-		// TODO Auto-generated method stub
-		return sql.selectList("boardMapper.list");
+		HashMap<String, Object> data = new HashMap<String, Object>();
+		  
+		
+		return sql.selectList("boardMapper.list",data);
 	}
 
 

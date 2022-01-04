@@ -108,47 +108,67 @@ public class HomeController {
 	}
 	@RequestMapping(value = "/board.do", method = RequestMethod.GET)
 	 public String getList(Locale locale, Model model,@RequestParam("num") int num) throws Exception {
-		int count = boardservice.count();
-		
-		int postNum = 10;
-		
-		int pageNum = (int)Math.ceil((double)count/postNum);
-		
-		int displayPost = (num - 1) * postNum;
-		
-		int pageNum_cnt = 5;
-		
-		int endPageNum = (int)(Math.ceil((double)num/ (double)pageNum_cnt) * pageNum_cnt);
-		
-		int startPageNum = endPageNum - (pageNum_cnt -1);
-		
-		// 마지막 번호 재계산
-		int endPageNum_tmp = (int)(Math.ceil((double)count / (double)pageNum_cnt));
-		 
-		if(endPageNum > endPageNum_tmp) {
-		 endPageNum = endPageNum_tmp;
-		}
-		
-		boolean prev = startPageNum == 1 ? false : true;
-		boolean next = endPageNum * pageNum_cnt >= count ? false : true;
-		
-		
-		
-		List<boardVO> list = boardservice.listPage(displayPost, postNum);
-		 model.addAttribute("list", list);
-		 model.addAttribute("pageNum", pageNum);
-		 
-		// 시작 및 끝 번호
-		 model.addAttribute("startPageNum", startPageNum);
-		 model.addAttribute("endPageNum", endPageNum);
+		Page page = new Page();
+		page.setNum(num);
+		page.setCount(boardservice.count());  
 
-		 // 이전 및 다음 
-		 model.addAttribute("prev", prev);
-		 model.addAttribute("next", next);
+		List<boardVO> list = null; 
+		list = boardservice.listPage(page.getDisplayPost(), page.getPostNum());
+
+		model.addAttribute("list", list);   
+		model.addAttribute("pageNum", page.getPageNum());
+
+		model.addAttribute("startPageNum", page.getStartPageNum());
+		model.addAttribute("endPageNum", page.getEndPageNum());
 		 
-		 model.addAttribute("select", num);
-		 
-		 Page page = new Page();
+		  model.addAttribute("prev", page.getPrev());
+		model.addAttribute("next", page.getNext());  
+
+		model.addAttribute("select", num);
+		
+		model.addAttribute("page", page);
+
+		
+//		int count = boardservice.count();
+//		
+//		int postNum = 10;
+//		
+//		int pageNum = (int)Math.ceil((double)count/postNum);
+//		
+//		int displayPost = (num - 1) * postNum;
+//		
+//		int pageNum_cnt = 5;
+//		
+//		int endPageNum = (int)(Math.ceil((double)num/ (double)pageNum_cnt) * pageNum_cnt);
+//		
+//		int startPageNum = endPageNum - (pageNum_cnt -1);
+//		
+//		// 마지막 번호 재계산
+//		int endPageNum_tmp = (int)(Math.ceil((double)count / (double)pageNum_cnt));
+//		 
+//		if(endPageNum > endPageNum_tmp) {
+//		 endPageNum = endPageNum_tmp;
+//		}
+//		
+//		boolean prev = startPageNum == 1 ? false : true;
+//		boolean next = endPageNum * pageNum_cnt >= count ? false : true;
+////		
+//		
+//		
+//		List<boardVO> list = boardservice.listPage(displayPost, postNum);
+//		 model.addAttribute("list", list);
+//		 model.addAttribute("pageNum", pageNum);
+//		 
+//		// 시작 및 끝 번호
+//		 model.addAttribute("startPageNum", startPageNum);
+//		 model.addAttribute("endPageNum", endPageNum);
+//
+//		 // 이전 및 다음 
+//		 model.addAttribute("prev", prev);
+//		 model.addAttribute("next", next);
+//		 
+//		 model.addAttribute("select", num);
+		
 		 
 		 return "board/list";
 
@@ -235,6 +255,9 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/loginChk", method = RequestMethod.POST)
 	public int loginChk(userVO vo) throws Exception{
+		String inputPass = vo.getMem_pass();
+		String pass = passEncoder.encode(inputPass);
+		vo.setMem_pass(pass);
 		int result = service.loginChk(vo);
 		return result;
 	}
@@ -255,9 +278,10 @@ public class HomeController {
 	
 	@RequestMapping(value = "signup.do", method = RequestMethod.POST)
 	public String postSignup(userVO vo,@RequestParam("mem_id")String mem_name,@RequestParam("mem_pass") String mem_pass) throws Exception{
-		//String inputPass = vo.getMem_pass();
+		String inputPass = vo.getMem_pass();
 		
-		//String pass = passEncoder.encode(inputPass);
+		String pass = passEncoder.encode(inputPass);
+		vo.setMem_pass(pass);
 		int result = service.idChk(vo);
 		System.out.println(result);
 		try {
@@ -284,9 +308,16 @@ public class HomeController {
 	@RequestMapping(value = "/signin.do", method = RequestMethod.POST)
 	public String postLogin(userVO vo, HttpServletRequest req, RedirectAttributes rttr, HttpSession session) throws Exception{
 		userVO login = service.Login(vo);
-		//boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
+		String inputPass = login.getMem_pass();
+		
+		String pass = passEncoder.encode(inputPass);
+		
+		
+		
+		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
+		System.out.println(passMatch);
 		int result = service.loginChk(vo);
-		if(login != null) {
+		if(login != null &&passMatch ==true) {
 			try {
 				
 				if(result == 0) {
@@ -295,6 +326,7 @@ public class HomeController {
 					session.setAttribute("member1", login);
 							session.setAttribute("num_id", login.getNum_id());
 							session.setAttribute("mem_day", login.getMem_day());
+							session.setAttribute("mem_name", login.getMem_name());
 							
 							System.out.println(session.getAttribute("member1"));
 							return "home";

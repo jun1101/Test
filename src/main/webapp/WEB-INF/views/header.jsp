@@ -51,12 +51,13 @@ background:#a9a9a9;
 			<c:if test ="${member1 != null}">
 			<li><a href="${pageContext.request.contextPath}/main.do">Home</a></li>
 			<li><a href="${pageContext.request.contextPath}/pay.do">이용권 구매</a></li>
+			<li><a href="${pageContext.request.contextPath}/board.do?num=1">게시물 목록</a></li>
 				
 				<li>
 					<a href="${pageContext.request.contextPath}/Logout.do">Logout</a>
 				</li>
 				
-				<li>${member1.mem_id}님 환영합니다.</li>
+				<span>${member1.mem_id}님 환영합니다.</span>
 			</c:if>
 			<c:if test="${userId != null}">
 			<li>123123123123123</li>

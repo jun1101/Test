@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>게시물 수정</title>
 <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
+
 <style>	.video-frame::before{
     content: '';
     background: linear-gradient(-135deg,black,transparent);
@@ -57,9 +58,11 @@ $(document).ready(function() {
         $('#cnt').html("("+$(this).val().length+" / 200)");
  
         if($(this).val().length > 200) {
-        	alert("내용은 200자 까지만 작성이 가능합니다 ")
-            $(this).val($(this).val().substring(0, 200));
-            $('#cnt').html("(200 / 200)");
+        	 if($(this).val().length > 200) {
+             	$("#cnt").css("color","red");
+                
+                
+             }
         }
     });
 });

@@ -7,9 +7,15 @@
 <meta charset="UTF-8">
 <title>게시물 작성</title>
 <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
+<link rel="stylesheet" href="resources/css/style2.css"/>
 </head>
 <body>
-<%@include file="../header.jsp" %>
+<div class ="container">
+	<div class="video-frame">
+	<video src="resources/video/BackGround.mp4" autoplay muted loop></video>
+	</div>
+	<%@include file="../header.jsp" %>
+	
 <form name ="writerform"method="get" action="${pageContext.request.contextPath}/postWrite.do" onsubmit="return check();">
 
 <label>제목</label>
@@ -24,6 +30,7 @@
 
 <button type="submit">작성</button>
 </form>
+</div>
 </body>
 <script>
 $(document).ready(function() {
@@ -31,9 +38,12 @@ $(document).ready(function() {
         $('#cnt').html("("+$(this).val().length+" / 200)");
  
         if($(this).val().length > 200) {
-        	
+        	$("#cnt").css("color","red");
            
-            $('#cnt').html("(200 / 200)");
+           
+        }
+        else if($(this).val().length <= 200){
+        	$("#cnt").css("color","white");
         }
     });
 });

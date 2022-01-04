@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+body{color:#fff;}
+
+a {
+    outline: none;
+    text-decoration: none;
+    color: #fff;
+}
+
+span{
+	color:#fff;
+}

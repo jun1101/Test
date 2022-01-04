@@ -8,6 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
 <script src="resources/js/jQuery.form.js" type="text/javascript"></script>
 <script src="resources/js/upload.js" type="text/javascript"></script>
+<link rel="stylesheet" href="resources/css/style.css"/>
+<link rel="stylesheet" href="resources/css/style2.css"/>
 	<title>Audio-cleaner</title>
 	<style type="text/css">
 	
@@ -112,7 +114,7 @@ div.fileDrop{
 	</main>
 
 </div>
-</div>
+
         
 </body>
 </html>

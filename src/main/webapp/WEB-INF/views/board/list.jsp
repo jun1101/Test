@@ -1,23 +1,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="resources/css/style2.css"/>
+<link rel="stylesheet" href="resources/css/border.css"/>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <meta charset="UTF-8">
 <title>게시물 목록</title>
 </head>
 <body>
-<%@include file="../header.jsp" %>
+<div class ="container">
+	<div class="video-frame">
+	<video src="resources/video/BackGround.mp4" autoplay muted loop></video>
+	</div>
+	<%@include file="../header.jsp" %>
+	
 <div class="row">
 <div class="col-xs-12">
 <table class= "table table-striped">
@@ -51,11 +54,11 @@
 </div>
 
 <div>
- <c:if test="${prev}">
- <span>[ <a href="${pageContext.request.contextPath}/board.do?num=${startPageNum - 1}">이전</a> ]</span>
+ <c:if test="${page.prev}">
+ <span>[ <a href="${pageContext.request.contextPath}/board.do?num=${page.startPageNum - 1}">이전</a> ]</span>
 </c:if>
 
-<c:forEach begin="${startPageNum}" end="${endPageNum}" var="num">
+<c:forEach begin="${page.startPageNum}" end="${page.endPageNum}" var="num">
  <span>
  
   <c:if test="${select != num}">
@@ -69,12 +72,14 @@
  </span>
 </c:forEach>
 
-<c:if test="${next}">
- <span>[ <a href="${pageContext.request.contextPath}/board.do?num=${endPageNum + 1}">다음</a> ]</span>
+<c:if test="${page.next}">
+ <span>[ <a href="${pageContext.request.contextPath}/board.do?num=${page.endPageNum + 1}">다음</a> ]</span>
 </c:if>
 </div>
-<a href="${pageContext.request.contextPath}/boardWrite.do">게시판작성</a>
-
+<c:if test ="${member1 != null}">
+<a style="color=#fff" href= "${pageContext.request.contextPath}/boardWrite.do">게시판작성</a>
+</c:if>
+</div>
 <div>
   <select name="searchType">
       <option value="title">제목</option>
@@ -85,8 +90,8 @@
   
   <input type="text" name="keyword" />
   
-  <button type="button">검색</button>
+  <button type="button" id="searchBtn">검색</button>
  </div>
-
 </body>
+
 </html>

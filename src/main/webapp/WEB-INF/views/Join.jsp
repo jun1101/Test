@@ -8,24 +8,10 @@
 <meta charset="UTF-8">
 <title>Join</title>
 <link href="resources/css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="resources/css/style2.css"/>
 <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
 <style>
-.video-frame::before{
-    content: '';
-    background: linear-gradient(-135deg,black,transparent);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top:0;
-    left:0;
-    z-index:-100;
-    }
-    .video-frame video{
-    position:fixed;
-    min-width: 100%;
-    min-height:100%;
-    z-index:-1;
-    }
+
 </style>
 </head>
 <body>
@@ -36,7 +22,7 @@
 	<%@include file="../views/header.jsp" %>
 	
 	
-	
+	<h2 class="Join_name">JOIN</h2>
 	<form name ="joinform"class="Join" action="${pageContext.request.contextPath}/signup.do" method="post" onsubmit="return check();">
 		<div>
 		<span>아이디</span>

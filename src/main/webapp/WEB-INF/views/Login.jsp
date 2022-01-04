@@ -11,24 +11,8 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-<style>
-.video-frame::before{
-    content: '';
-    background: linear-gradient(-135deg,black,transparent);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top:0;
-    left:0;
-    z-index:-100;
-    }
-    .video-frame video{
-    position:fixed;
-    min-width: 100%;
-    min-height:100%;
-    z-index:-1;
-    }
-</style>
+<link rel="stylesheet" href="resources/css/style2.css"/>
+
 </head>
 <body>
 <div class ="container">
@@ -37,7 +21,8 @@
 	</div>
 	<%@include file="../views/header.jsp" %>
 	
-
+	<div>
+	<div class="top">
 	<form name="loginform"id="loginform"role="form" class="Login" action="${pageContext.request.contextPath}/signin.do" method="post" onsubmit="return check();" >
 		<span>아이디</span>
 		<input type="text" placeholder="Email Address" name="mem_id" id="mem_id">
@@ -51,16 +36,18 @@
 	</form>
 	
 
-      <a href="javascript:kakaoLogin()">
+      <a class=kakaoBtn href="javascript:kakaoLogin()">
           <span><img src="resources/img/kakao_login_medium_narrow.png"/></span>
       </a>
      
+     
       
   
-     <a href="${url}"> <img src="https://static.nid.naver.com/oauth/big_g.PNG?version=js-2.0.1" height="50"/></a>
+     <a class="naver" href="${url}"> <img src="https://static.nid.naver.com/oauth/big_g.PNG?version=js-2.0.1" height="50"/></a>
      <div class="google_login"><img src="resources/img/btn_google.png" onmouseover="this.src='resources/img/btn_google_hover.png'"
 			onmouseout="this.src='resources/img/btn_google.png'" style="width: 263px; height: 62px;" id="google_login" onclick="init();"></div>
-   
+   </div>
+   </div>
 	  <form name="kakaoForm" id="kakaoForm" method = "post" action="${pageContext.request.contextPath}/setSnsInfo.do">
 			<input type="hidden" name="mem_id" id="kakaoEmail" />
 			<input type="hidden" name="mem_kakao" id="kakaoId" />

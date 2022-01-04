@@ -28,67 +28,52 @@ public class Page {
 	// 다음/이전 표시 여부
 	private boolean prev;
 	private boolean next;
-	public int getNum() {
-		return num;
-	}
-	public void setNum(int num) {
-		this.num = num;
-	}
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
-	}
-	public int getPostNum() {
-		return postNum;
-	}
-	public void setPostNum(int postNum) {
-		this.postNum = postNum;
-	}
-	public int getPageNum() {
-		return pageNum;
-	}
-	public void setPageNum(int pageNum) {
-		this.pageNum = pageNum;
-	}
-	public int getDisplayPost() {
-		return displayPost;
-	}
-	public void setDisplayPost(int displayPost) {
-		this.displayPost = displayPost;
-	}
-	public int getPageNumCnt() {
-		return pageNumCnt;
-	}
-	public void setPageNumCnt(int pageNumCnt) {
-		this.pageNumCnt = pageNumCnt;
-	}
-	public int getEndPageNum() {
-		return endPageNum;
-	}
-	public void setEndPageNum(int endPageNum) {
-		this.endPageNum = endPageNum;
-	}
-	public int getStartPageNum() {
-		return startPageNum;
-	}
-	public void setStartPageNum(int startPageNum) {
-		this.startPageNum = startPageNum;
-	}
-	public boolean isPrev() {
-		return prev;
-	}
-	public void setPrev(boolean prev) {
-		this.prev = prev;
-	}
-	public boolean isNext() {
-		return next;
-	}
-	public void setNext(boolean next) {
-		this.next = next;
-	}
 	
+	public void setNum(int num) {
+		 this.num = num;
+		}
+
+		public void setCount(int count) {
+		 this.count = count;
+		 
+		 dataCalc();
+		}
+
+		public int getCount() {
+		 return count;
+		}
+
+		public int getPostNum() {
+		 return postNum;
+		}
+
+		public int getPageNum() {
+		 return pageNum;
+		}
+
+		public int getDisplayPost() {
+		 return displayPost;
+		}
+
+		public int getPageNumCnt() {
+		 return pageNumCnt;
+		}
+
+		public int getEndPageNum() {
+		 return endPageNum;
+		}
+
+		public int getStartPageNum() {
+		 return startPageNum;
+		}
+
+		public boolean getPrev() {
+		 return prev;
+		} 
+
+		public boolean getNext() {
+		 return next;
+		}
 	private void dataCalc() {
 		 
 		 // 마지막 번호
@@ -110,7 +95,6 @@ public class Page {
 		 displayPost = (num - 1) * postNum;
 		 
 		}
-	
-	
+
 
 }
