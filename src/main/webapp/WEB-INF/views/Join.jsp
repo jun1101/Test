@@ -161,16 +161,38 @@ function fn_idChk(){
 	 if(!regexp.test(objPhone.value)){
          alert("전화번호에 숫자만 사용 가능합니다 숫자만 입력하여주세요.");
          return false;
+         
+         
+         
+         
      }
 	 
 	 var idChkVal = $("#idChk").val();
 		if(idChkVal == "N"){
 			alert("중복확인을 확인 해주세요");
 			return false;
-		}else if(idChkVal == "Y"){
-			$("#joinform").submit();
-			alert("회원가입이 완료되었습니다.")
 		}
+		
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/idChk",
+			type : "post",
+			dataType: "json",
+			data : {"mem_id" : $("#mem_id").val()},
+			success : function(data){
+				if(data == 1){
+					alert("사용할수 없는 아이디입니다");
+					return false;
+				}else if (data == 0){
+				
+					alert("회원가입이 완료되었습니다.")
+					return true;
+				}
+				}
+			
+		
+		});
+		
 	 
 	 
  }

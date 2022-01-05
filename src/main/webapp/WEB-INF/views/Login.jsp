@@ -108,7 +108,7 @@ function check(){
 					alert("로그인이 완료되었습니다.");
 					
 				}else if(data == 0){
-					console.log("탓는데 시발아");
+					
 					alert("로그인 정보가 일치하지않습니다 아이디와 비밀번호를 확인해주세요");
 					return false;
 					

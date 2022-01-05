@@ -182,7 +182,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/postWrite.do", method = RequestMethod.GET)
-	public String postWrite(boardVO vo,  Model model ) throws Exception{
+	public String postWrite(boardVO vo,  Model model, HttpSession session ) throws Exception{
+		String writer = (String) session.getAttribute("mem_name");
+		vo.setWriter(writer);
 		boardservice.board_write(vo);
 		
 		
@@ -216,8 +218,9 @@ public class HomeController {
 	
 	
 	@RequestMapping(value ="/board_modify.do", method = RequestMethod.POST)
-	public String boardModify(boardVO vo, Model model) throws Exception{
-		
+	public String boardModify(boardVO vo, Model model,HttpSession session) throws Exception{
+		String writer = (String) session.getAttribute("mem_name");
+		vo.setWriter(writer);
 		boardservice.board_modify(vo);
 		
 				
@@ -255,10 +258,29 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/loginChk", method = RequestMethod.POST)
 	public int loginChk(userVO vo) throws Exception{
-		String inputPass = vo.getMem_pass();
+//		String inputPass = mem_pass;
+//		System.out.println("메메ㅠㅐ스"+mem_pass);
+//		String pass = passEncoder.encode(inputPass);
+//		System.out.println("dasd"+pass);
+//		vo.setMem_pass(pass);
+//		
+//		return result;
+		userVO login = service.Login(vo);
+		String inputPass = login.getMem_pass();
+		
 		String pass = passEncoder.encode(inputPass);
-		vo.setMem_pass(pass);
-		int result = service.loginChk(vo);
+		
+		int result;
+		
+		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
+		
+		if(passMatch==true) {
+			result = 1;
+		}
+		else {
+			result = 0;
+		}
+		
 		return result;
 	}
 	
@@ -306,7 +328,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/signin.do", method = RequestMethod.POST)
-	public String postLogin(userVO vo, HttpServletRequest req, RedirectAttributes rttr, HttpSession session) throws Exception{
+	public String postLogin(userVO vo, HttpServletRequest req, RedirectAttributes rttr, HttpSession session,@RequestParam("mem_pass") String mem_pass) throws Exception{
 		userVO login = service.Login(vo);
 		String inputPass = login.getMem_pass();
 		
@@ -316,13 +338,13 @@ public class HomeController {
 		
 		boolean passMatch = passEncoder.matches(vo.getMem_pass(), login.getMem_pass());
 		System.out.println(passMatch);
-		int result = service.loginChk(vo);
+		//int result = service.loginChk(vo);
 		if(login != null &&passMatch ==true) {
-			try {
+			//try {
 				
-				if(result == 0) {
-					return "Login";
-				}else if(result == 1) {
+				//if(result == 0) {
+				//	return "Login";
+				//}else if(result == 1) {
 					session.setAttribute("member1", login);
 							session.setAttribute("num_id", login.getNum_id());
 							session.setAttribute("mem_day", login.getMem_day());
@@ -331,11 +353,11 @@ public class HomeController {
 							System.out.println(session.getAttribute("member1"));
 							return "home";
 				}
-			} catch(Exception e) {
-				throw new RuntimeException();
-			}
+			//} catch(Exception e) {
+			//	throw new RuntimeException();
+			//}
 			
-		}
+	//	}
 	//		session.setAttribute("member1", login);
 	//		session.setAttribute("num_id", login.getNum_id());
 	//		session.setAttribute("mem_day", login.getMem_day());

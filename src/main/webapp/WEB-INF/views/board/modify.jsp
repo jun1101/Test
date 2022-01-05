@@ -42,7 +42,7 @@
 <input type="hidden" name="bno" value="${view.bno}">
 
 <label>작성자</label>
-<input type="text" name="writer"id="writer" value="${view.writer}"><br />
+${member1.mem_name}<br />
 
 <label>내용</label>
 <textarea cols="50" rows="5" id="content" name=content>${view.content}</textarea><br />

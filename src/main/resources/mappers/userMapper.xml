@@ -73,7 +73,7 @@
 	</select>
 	<select id="loginChk" resultType="int">
 		select count(*) from members
-		where mem_id = #{mem_id} 
+		where mem_id = #{mem_id} and mem_pass=#{mem_pass}
 	</select>
 	
 </mapper>

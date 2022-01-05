@@ -22,7 +22,7 @@
 <input type="text" name="title" id="title" /><br />
 
 <label>작성자</label>
-<input type="text" name="writer" id="writer" /><br />
+${member1.mem_name}<br />
 
 <label>내용</label>
 <textarea cols="50" rows="5" name="content" id="content"></textarea><br />
